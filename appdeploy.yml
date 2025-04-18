@@ -1,0 +1,26 @@
+---
+- name: Deploy a PHP Web Application
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Install Apache and PHP
+      apt:
+        name:
+          - apache2
+          - php
+        state: present
+
+    - name: Deploy a PHP application
+      copy:
+        content: |
+          <?php
+          echo "<h1>Hello from Ansible and PHP!</h1>";
+          echo "<body>This is demo page</body>";
+          ?>
+        dest: /var/www/html/index.php
+
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
